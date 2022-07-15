@@ -1,151 +1,49 @@
+# Starter pipeline
+
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+
+# Add steps that build, run tests, deploy, and more:
+
+# https://aka.ms/yaml
+
+
+
 trigger:
 
-
-
-  branches:
-
-
-
-    include:
+- main
 
 
 
-      - azure-pipelines 
-
-
-
-
-
-variables:
-
-
-
-  # Container registry service connection established during pipeline creation
-
-
-
-  dockerRegistryServiceConnection: 'testdocker'
-
-
-
-  imageRepository: 'sgk'
-
-
-
-  containerRegistry: 'prdctmntc.azurecr.io'
-
-
-
-  dockeruser: 'prdctmntc'
-
-
-
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-
-
-
-  tag: '$(Build.BuildId)'
-
-
-
- 
-
-
+pool:
 
   vmImage: ubuntu-latest
 
 
 
+steps:
 
+- task: Docker@2
 
-stages:
+  displayName: buildAndPush
 
+  inputs:
 
+    containerRegistry: 'sgksatish'
 
-- stage: Build
+    repository: 'sgk'
 
+    command: 'buildAndPush'
 
+    Dockerfile: '**/Dockerfile'
 
-  displayName: Build and push stage
+   
 
+- task: PublishPipelineArtifact@1
 
+  inputs:
 
-  jobs:
+    targetPath: '$(Pipeline.Workspace)'
 
+    artifact: 'buildArtifacts'
 
-
-  - job: Build
-
-
-
-    displayName: Build
-
-
-
-    pool:
-
-
-
-      vmImage: $(vmImage)
-
-
-
-    steps:
-
-
-
-    - task: Docker@2
-
-
-
-      displayName: Build and push an image to container registry
-
-
-
-      inputs:
-
-
-
-        command: buildAndPush
-
-
-
-        repository: $(imageRepository)
-
-
-
-        dockerfile: $(dockerfilePath)
-
-
-
-        containerRegistry: $(dockerRegistryServiceConnection)
-
-
-
-        tags: |
-
-
-
-          latest,$(tag)
-
-
-
-
-
-    - task: PublishPipelineArtifact@1
-
-
-
-      inputs:
-
-
-
-        targetPath: '$(Pipeline.Workspace)'
-
-
-
-        artifact: 'builds'
-
-
-
-        publishLocation: 'pipeline'
+    publishLocation: 'pipeline'

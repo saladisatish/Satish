@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: dotnetnxt
-          image: prdctmntc.azurecr.io/sgksaladi:#{Release.Artifacts.sgksaladi.BuildId}#
+          image: prdctmntc.azurecr.io/sgk:#{Release.Artifacts.sgksaladi.BuildId}#
          
           imagePullPolicy: Always
 
