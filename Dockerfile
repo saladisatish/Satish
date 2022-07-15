@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 # EXPOSE 5000
 WORKDIR /app
 
-COPY IOTHUB.csproj ./
+COPY IoTHub.csproj ./
 RUN dotnet restore
 
 RUN dotnet dev-certs https --clean 
